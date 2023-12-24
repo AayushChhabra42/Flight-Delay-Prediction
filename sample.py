@@ -6,10 +6,19 @@ import joblib
 from datetime import datetime
 print(sklearn.__version__)
 classifier = joblib.load("my_random_forest.joblib")
+from datetime import timedelta
 
 def round_off_time(time):
-    rounded_time = time.replace(minute=round(time.minute / 60) * 60)
+    rounded_hour = time.hour
+    rounded_minute = round(time.minute / 60) * 60  # Round minutes to the nearest hour
+    if rounded_minute == 60:
+        rounded_hour += 1
+        rounded_minute = 0
+    rounded_time = time.replace(hour=rounded_hour, minute=rounded_minute, second=0, microsecond=0)
     return rounded_time
+
+
+
 
 def get_params(lat,long,ts):
     url=f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={long}&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,precipitation,wind_speed_10m,wind_speed_120m&forecast_days=7"
@@ -54,7 +63,9 @@ def predict_flight_delay(departure_air,arrival_air,departure_date,departure_time
     departure_air=lat_and_long[departure_air]
     arrival_air=lat_and_long[arrival_air]
     departure_time = round_off_time(departure_time)
+    print(departure_time)
     arrival_time = round_off_time(arrival_time)
+    print(arrival_time)
     departure_timestamp=datetime.combine(departure_date,departure_time)
     arrival_timestamp=datetime.combine(arrival_date,arrival_time)
     departure_data=get_params(departure_air[0],departure_air[1],departure_timestamp)
