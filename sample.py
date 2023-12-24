@@ -2,10 +2,11 @@ import streamlit as st
 import pickle as pk
 import sklearn
 import requests
+import joblib
 from datetime import datetime
 print(sklearn.__version__)
-pickle_in = open("rf_classifier.pkl","rb")
-classifier=pk.load(pickle_in)
+classifier = joblib.load("my_random_forest.joblib")
+
 
 def get_params(lat,long,ts):
     url=f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={long}&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,precipitation,wind_speed_10m,wind_speed_120m&forecast_days=7"
