@@ -75,6 +75,6 @@ def main():
     result=""
     if st.button("Predict"):
         result=predict_flight_delay(departure_air,arrival_air,departure_date,departure_time,arrival_date,arrival_time)
-    st.success("The output is {}".format(result[0]))
+    st.success("The output is {}".format(result))
 if __name__=="__main__":
     main()
